@@ -51,16 +51,24 @@ st.markdown("""
 
 
 
-manual_points = st.text_input("Enter nucleation points (comma-separated, in minutes):", "2.5, 4.0, 5.8")
-try:
-    selected_points = [(float(x.strip()), 0) for x in manual_points.split(",") if x.strip()]
-except:
-    st.error("Invalid format. Use numbers separated by commas.")
-    st.stop()
-    
+# --- Nucleation Point Selection via Slider ---
+st.subheader("Select nucleation points")
+
+# Create a slider-friendly list of times (rounded to 1 decimal place for clarity)
+unique_times = sorted(set(np.round(time_min, 2)))
+selected_slider_points = st.multiselect(
+    "Select nucleation points (in minutes):",
+    options=unique_times,
+    default=unique_times[:3],  # choose first 3 by default
+    help="Pick the nucleation times using this slider list."
+)
+# Limit number of curves (nucleation points)
+max_curves = st.slider("Number of nucleation points to include:", min_value=1, max_value=len(selected_slider_points), value=min(3, len(selected_slider_points)))
+
+selected_points = [(float(t), 0) for t in selected_slider_points[:max_curves]]
 
 if len(selected_points) == 0:
-    st.warning("You must enter at least one nucleation point.")
+    st.warning("Please select at least one nucleation point.")
     st.stop()
 
 n = len(selected_points)
