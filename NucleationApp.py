@@ -49,27 +49,28 @@ st.markdown("""
 - **Workaround:** Manually enter the x-values (time in minutes) where nucleation occurs.
 """)
 
+# --- Step 1: Ask how many nucleation points to select ---
+st.subheader("Step 1: Define nucleation points")
 
+max_possible_points = 10  # Optional upper limit
+num_points = st.slider("How many nucleation points do you want to define?", min_value=1, max_value=max_possible_points, value=3)
 
-# --- Nucleation Point Selection via Slider ---
-st.subheader("Select nucleation points")
-
-# Create a slider-friendly list of times (rounded to 1 decimal place for clarity)
+# --- Step 2: Create a slider per nucleation point ---
 unique_times = sorted(set(np.round(time_min, 2)))
-selected_slider_points = st.multiselect(
-    "Select nucleation points (in minutes):",
-    options=unique_times,
-    default=unique_times[:3],  # choose first 3 by default
-    help="Pick the nucleation times using this slider list."
-)
-# Limit number of curves (nucleation points)
-max_curves = st.slider("Number of nucleation points to include:", min_value=1, max_value=len(selected_slider_points), value=min(3, len(selected_slider_points)))
+selected_points = []
 
-selected_points = [(float(t), 0) for t in selected_slider_points[:max_curves]]
+st.markdown("### Select nucleation times (in minutes):")
 
-if len(selected_points) == 0:
-    st.warning("Please select at least one nucleation point.")
-    st.stop()
+for i in range(num_points):
+    selected_time = st.select_slider(
+        label=f"Nucleation point {i + 1}",
+        options=unique_times,
+        value=unique_times[min(i, len(unique_times) - 1)]
+    )
+    selected_points.append((selected_time, 0))  # We still need (x, 0) format
+
+
+
 
 n = len(selected_points)
 t_value = stats.t.ppf(0.975, df=n - 1) if n < 30 else 1.96
