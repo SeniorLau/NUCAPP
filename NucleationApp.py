@@ -6,7 +6,7 @@ import scipy.stats as stats
 
 st.set_page_config(page_title="Nucleation Aligner", layout="centered")
 
-st.title("🧪 Nucleation Curve Aligner")
+st.title("🧪 Freezing curve aligner")
 
 # --- File Upload ---
 uploaded_file = st.file_uploader("Upload your semicolon-separated CSV (comma decimal):", type=["csv"])
