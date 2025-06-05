@@ -25,8 +25,8 @@ else:
     st.stop()
 
 # --- User Inputs ---
-n_before = st.number_input("Points BEFORE nucleation:", min_value=0, max_value=1000, value=50)
-n_after = st.number_input("Points AFTER nucleation:", min_value=0, max_value=2000, value=320)
+n_before = st.slider("Points BEFORE nucleation:", min_value=0, max_value=500, value=50, step=5)
+n_after = st.slider("Points AFTER nucleation:", min_value=0, max_value=2000, value=320, step=10)
 XLIM = st.number_input("Xlim of graph:", min_value=0, max_value=1000, value=50)
 # --- Plot and select nucleation points ---
 st.subheader("Step 1: Click nucleation points on plot")
