@@ -52,16 +52,14 @@ with tab_main:
 
     # Draw vertical lines at selected nucleation points
     for x_val, _ in selected_points:
-    ax1.axvline(x=x_val, color='red', linestyle='--')
+        ax1.axvline(x=x_val, color='red', linestyle='--')
 
-    ax1.set_xlabel('Time (min)')
-    ax1.set_ylabel('Temperature (°C)')
-    ax1.set_title("Nucleation points (shown as red dashed lines)")
-    ax1.grid(True)
-    st.pyplot(fig1)
+        ax1.set_xlabel('Time (min)')
+        ax1.set_ylabel('Temperature (°C)')
+        ax1.set_title("Nucleation points (shown as red dashed lines)")
+        ax1.grid(True)
+        st.pyplot(fig1)
 
-    st.warning("Streamlit does not support interactive point selection via matplotlib in browser.")
-    st.subheader("Step 1: Select nucleation points")
 
     # Ask user how many curves they want to analyze
     num_points = st.slider("Number of nucleation points to select:", min_value=1, max_value=10, value=3)
