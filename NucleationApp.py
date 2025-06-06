@@ -48,20 +48,29 @@ with tab_main:
     temperature = np.array(df['fTemperatureCorrected'])
 
     fig1, ax1 = plt.subplots()
-    ax1.plot(time_min, temperature)
+    ax1.plot(time_min, temperature, label='Corrected Temperature')
+
+    # Draw vertical lines at selected nucleation points
+    for x_val, _ in selected_points:
+    ax1.axvline(x=x_val, color='red', linestyle='--')
+
     ax1.set_xlabel('Time (min)')
     ax1.set_ylabel('Temperature (°C)')
-    ax1.set_title("Nucleation points")
+    ax1.set_title("Nucleation points (shown as red dashed lines)")
     ax1.grid(True)
     st.pyplot(fig1)
 
     st.warning("Streamlit does not support interactive point selection via matplotlib in browser.")
-    manual_points = st.text_input("Enter nucleation points (comma-separated, in minutes):", "2.5, 4.0, 5.8")
-    try:
-        selected_points = [(float(x.strip()), 0) for x in manual_points.split(",") if x.strip()]
-    except:
-        st.error("Invalid input format.")
-        st.stop()
+    st.subheader("Step 1: Select nucleation points")
+
+    # Ask user how many curves they want to analyze
+    num_points = st.slider("Number of nucleation points to select:", min_value=1, max_value=10, value=3)
+
+    # Show sliders to select time for each nucleation point
+    selected_points = []
+    for i in range(num_points):
+        x_val = st.slider(f"Nucleation point #{i + 1} (in minutes):", min_value=float(time_min.min()), max_value=float(time_min.max()), value=float(time_min.min()) + i)
+        selected_points.append((x_val, 0))
 
     if len(selected_points) == 0:
         st.warning("You must enter at least one nucleation point.")
