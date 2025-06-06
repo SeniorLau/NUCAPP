@@ -48,17 +48,12 @@ with tab_main:
     temperature = np.array(df['fTemperatureCorrected'])
 
     fig1, ax1 = plt.subplots()
-    ax1.plot(time_min, temperature, label='Corrected Temperature')
-
-    # Draw vertical lines at selected nucleation points
-    for x_val, _ in selected_points:
-        ax1.axvline(x=x_val, color='red', linestyle='--')
-
-        ax1.set_xlabel('Time (min)')
-        ax1.set_ylabel('Temperature (°C)')
-        ax1.set_title("Nucleation points (shown as red dashed lines)")
-        ax1.grid(True)
-        st.pyplot(fig1)
+    ax1.plot(time_min, temperature)
+    ax1.set_xlabel('Time (min)')
+    ax1.set_ylabel('Temperature (°C)')
+    ax1.set_title("Nucleation points")
+    ax1.grid(True)
+    st.pyplot(fig1)
 
 
     # Ask user how many curves they want to analyze
